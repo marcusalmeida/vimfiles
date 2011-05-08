@@ -294,6 +294,9 @@ let g:fuzzy_ignore="*.ico;*.png;*PNG;*.jpg;*.JPG;*.GIF;*.gif;tmp/**;log/**"
 let g:fuf_tag_cache_dir = ''
 let g:fuf_taggedfile_cache_dir = ''
 
+" NERDTree ignore files
+let NERDTreeIgnore = ['\.pyc$']
+
 " Start NERDTree when in gui_gnome  MODE
 if has("gui_running")
     set guicursor=a:blinkon0 " Disable blinking cursor
