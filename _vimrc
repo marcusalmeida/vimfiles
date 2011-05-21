@@ -1,7 +1,61 @@
-" Use Vim setting, rather then VI settings.
+" ==========================================================
+" Dependencies - Libraries/Applications outside of vim
+" ==========================================================
+" Pep8 - http://pypi.python.org/pypi/pep8
+" Pyflakes
+" Ack
+" Rake & Ruby for command-t
+" nose, django-nose
+
+" ==========================================================
+" Plugins included
+" ==========================================================
+" Pathogen
+"     Better Management of VIM plugins
+" GunDo
+"     Visual Undo in vim with diff's to check the differences
+"
+" Pytest
+"     Runs your Python tests in Vim.
+"
+" Commant-T
+"     Allows easy search and opening of files within a given path-
+"
+" Snipmate
+"     Configurable snippets to avoid re-typing common comands
+"
+" PyFlakes
+"     Underlines and displays errors with Python on-the-fly
+"
+" Fugitive
+"    Interface with git from vim
+"
+" Git
+"    Syntax highlighting for git config files
+"
+" Minibufexpl
+"    Visually display what buffers are currently opened
+"
+" Pydoc
+"    Opens up pydoc within vim
+"
+" Surround
+"    Allows you to surround text with open/close tags
+"
+" Py.test
+"    Run py.test test's from within vim
+"
+" MakeGreen
+"    Generic test runner that works with nose
+"
+
+
 " ############ SETTINGS ###################
 " This must be first, because other otpions as a side effects.
-set nocompatible
+set nocompatible      " Don't be compatible with vi
+
+" Seriously, guys. It's not like :W is bound to anything anyway.
+command! W :w
 
 " Disable intro screen
 set shm=atI
@@ -33,20 +87,8 @@ set showmode
 " Disable visual bell
 set vb
 
-" Find the nextr match as we type the search
-set incsearch
-
-" Highlight searchs by default
-set hlsearch
-
 " Show breakline
 set showbreak=... 
-
-" Indent settings
-set shiftwidth=2
-set softtabstop=2
-set expandtab
-set autoindent
 
 " Setting font 
 set guifont=Courier\ New\ 8
@@ -62,9 +104,21 @@ set wildmode=list:longest
 " Enable ctrl-n and ctrl-p to scroll thru matches
 set wildmenu
 
+" Ignore these files when completation
+set wildignore+=*.o, *.obj,.git,*.pyc 
+
 " Setting colorscheme
 colorscheme evening
 
+"""" Messages, Info, Status
+189 set ls=2                    " allways show status line
+190 set vb t_vb=                " Disable all bells.  I hate ringing/flashing.
+191 set confirm                 " Y-N-C prompt if closing with unsaved changes
+192 set showcmd                 " Show incomplete normal mode commands as I type.
+193 set report=0                " : commands always print changed line count
+194 set shortmess+=a            " Use [+]/[RO]/[w] for modified/readonly/written
+195 set ruler                   " Show some info, even without statuslines.
+196 set laststatus=2            " Always show statusline, even if only 1 window.
 " Setting status line
 set statusline=%F%m%r%h%w
 set statusline+=\ [FORMAT=%{&ff}]
@@ -79,7 +133,16 @@ set statusline+=%{StatuslineTabWarning()}
 set statusline+=%{StatuslineTrailingSpaceWarning()} 
 set statusline+=%{StatuslineLongLineWarning()} 
 set statusline+=%*]
-set laststatus=2
+
+" displays tabs with :set list & displays when a line runs off-screen
+set listchars=tab:>-,eol:$,trail:-,precedes:<,extends:>
+set list
+
+""" Searching and Patterns
+set ignorecase              " Default to using case insensitive searches,
+set smartcase               " unless uppercase letters are used in the regex.
+set hlsearch                " Highlight searches by default.
+set incsearch               " Incrementally search while typing a regex
 
 " Removing tool bar
 set guioptions-=T
@@ -89,20 +152,96 @@ set cursorline
 
 " Setting number line ON
 set number
+set numberwidth=1
 
 " Enable mouse support, unless in insert mode
 set mouse=a
 set ttymouse=xterm2
+
+" Show title on console title bar
+set title
+
+" Replace the default rep programa with ack
+set grepprg=ack-grep
+
+" Auto change the directory to the current file I'm working on
+"autocmd BufEnter * lcd %:p:h
+
+" Insert completation
+" don't select first item, follow typing in autocomplete
+set completeopt=menuone, longest, preview
+set pumheight=6                   "Keep a small completation window
+
+" Show a line at column 79
+if exists("&colorcolumn")
+    set colorcolumn=79
+endif
+
+""" Moving Around/Editing
+set cursorline              " have a line indicate the cursor location$
+set ruler                   " show the cursor position all the time
+set nostartofline           " Avoid moving cursor to BOL when jumping around
+set virtualedit=block       " Let cursor move past the last char in <C-v> mode
+set scrolloff=3             " Keep 3 context lines above and below the cursor
+set backspace=2             " Allow backspacing over autoindent, EOL, and BOL
+set showmatch               " Briefly jump to a paren once it's balanced
+set matchtime=2             " (for only .2 seconds).
+set nowrap                  " don't wrap text
+set linebreak               " don't wrap textin the middle of a word
+set autoindent              " always set autoindenting on
+set tabstop=4               " <tab> inserts 4 spaces
+set shiftwidth=4            " but an indent level is 2 spaces wide.
+set softtabstop=4           " <BS> over an autoindent deletes both spaces.
+set expandtab               " Use spaces, not tabs, for autoindent/tab key.
+set shiftround              " rounds indent to a multiple of shiftwidthd
+set matchpairs+=<:>         " show matching <> (html mainly) as well$
+set foldmethod=indent       " allow us to fold on indents$
+set foldlevel=99            " don't fold by default$
+
+" close preview window automatically when we move around
+autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+
 
 " Automatic closing brakets
 imap { {}<left>
 imap ( ()<left>
 imap [ []<left>
 
+
+" ===================================================================== "
+" Pathogen - Allows us to organize our vim plugins
+" ====================================================================  "
+filetype off
+call pathogen#runtime_append_all_bundles()
+call pathogen#helptags()
+
+" try to detect filestypes
+filetype on
 " turn on synthax highlighting
 syntax on
 
 " ##### KEY MAPPING ##### 
+let mapleader=","
+
+" Toggle the task list
+map <leader>td <Plug>TaskList
+
+" Run pep8
+let g:pep8_map='<leader>8'
+
+" ,v  brings up my .vimrc
+" ,V reload the .vimrc -- makign all change active (have to save first)
+map <leader>v :sp ~/.vimrc<CR><C-W>_
+map <silent> <leader> V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded"<CR>
+
+" open/close the quick window$
+nmap <leader>c :copen<CR>
+nmap <leader>cc :cclose<CR>
+
+" For when we forget to use sudo to open/edit a file
+cmap w!! w !sudo tee % >/dev/null
+
 
 " save file (ctrl-s)
 map <C-s> :w<CR> 
@@ -132,10 +271,10 @@ map <C-S-r> :FufFile<cr>
 map <C-S-d> :FufDir<cr>
 
 " NERDTree Close
-map <F2> :NERDTree<cr>
+map <leader>n :NERDTree<cr>
 
 " NERDTree Open
-map <F3> :NERDTreeClose<cr>
+map <leader>nc :NERDTreeClose<cr>
 
 " Buffer cycling 
 map <C-right> <ESC>:bn<cr>
@@ -153,6 +292,19 @@ map <A-k> :cprevious<CR>
 
 " Key to remove duplicated lines.
 map ,d <esc>:%s/\(^\n\{2,}\)/\r/g<CR>
+
+" Ack searching 
+nmap <leader>a <ESC>:Ack! 
+
+" Load the Gundo window
+map <leader>g :GundoToggle<CR>
+
+" Jump to definition of whatever the cursor is on
+map <leader>j :RopeGotoDefinition<CR>
+
+" Rename whatever the cursor is on (including refences to it)
+map <leader>r :RopeRename
+
 
 " ############ FUNCTIONS ###################
 " reacalculate the traling whitespace warning when idle, and after saving
@@ -281,11 +433,47 @@ else
   nmap <F12> :<C-u>source .vimrc <BAR> echo "vimrc realoaded"<CR>
 endif
 
+
+" ===================================================================
+" Python
+" ===================================================================
+"au BufRead *.py compiler nose
+au FileType python set omnifunc=pythoncomplete#Complete
+au BufRead *py set emf=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
+
+" Don't let pyflakes use the quickfix window
+let g:pyflakes_use_quickfix = 0
+
+" turn of hlsearch and update pyflakes on enter
+au BufRead,BufNewFile *.py nnoremap <buffer><CR> :nohlsearch\|:call PressedEnter()<cr>
+nnoremap <buffer><CR> :nohlsearch\|:call PressedEnter()<cr>
+
+" Clear the search buffer when hitting return and update pyflake checks
+function! PressedEnter()
+    :nohlsearch
+    if &filetype == 'python'
+        :PyflakesUpdate
+    end
+endfunction
+
+" ==========================================================
+" Javascript
+" ==========================================================
+au BufRead *.js set makeprg=jslint\ %$
+
+" ==========================================================
+" SuperTab - Allows us to get code completion with tab
+" ==========================================================
+" Try different completion methods depending on its context
+let g:SuperTabDefaultCompletionType = "context"
+
+
 " ############### PLUGINS SETTINGS ##################
 
 " load ftpplugins and indent files
 filetype plugin on 
 filetype indent on 
+
 
 " Fuzzy Finder Settings
 let g:fuzzy_matching_limit = 20
