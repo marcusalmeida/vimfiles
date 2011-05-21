@@ -212,8 +212,8 @@ imap [ []<left>
 " Setting this when need to log vim.
 " mkdir ~/.log/vim
 " ===================================================================== "
-" set verbosefile=~/.log/vim/verbose.log
-" set verbose=2
+set verbosefile=~/.log/vim/verbose.log
+set verbose=2
 " ===================================================================== "
 
 " ===================================================================== "
@@ -242,6 +242,8 @@ nmap <silent><Leader>tm <Esc>:Pytest method<CR>
 nmap <silent><Leader>tn <Esc>:Pytest next<CR>
 nmap <silent><Leader>tp <Esc>:Pytest previous<CR>
 nmap <silent><Leader>te <Esc>:Pytest error<CR>
+nmap <silent><Leader>ts <Esc>:Pytest session<CR>
+nmap <silent><Leader>tv <Esc>:Pytest verbose<CR>
 
 " Run django tests
 map <leader>dt :set makeprg=python\ manage.py\ test\|:call MakeGreen()<CR>
@@ -253,7 +255,7 @@ let g:pep8_map='<leader>8'
 " ,v  brings up my .vimrc
 " ,V reload the .vimrc -- makign all change active (have to save first)
 map <leader>v :sp ~/.vimrc<CR><C-W>_
-map <silent> <leader>V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded"<CR>
+map <silent> <leader>V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 
 " open/close the quick window$
 nmap <leader>c :copen<CR>
