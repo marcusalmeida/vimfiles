@@ -2,11 +2,79 @@ Files from my .vim folder.
 
 *** Rename _vimrc to .vimrc. (make backup for your old .vimrc file.)
 
-Vim Plugins Installed:
-1) Fuzzy Finder
-2) NERDTree
-3) surround
-4) snipMate
-   and others.
+ ==========================================================
+   Dependencies - Libraries/Applications outside of vim
+ ==========================================================
+  Pep8 - http://pypi.python.org/pypi/pep8
+  Pyflakes
+  Ack
+  Rake & Ruby for command-t
+ nose, django-nose
 
+ ==========================================================
+ Plugins included
+ ==========================================================
+ --> Pathogen
+     Better Management of VIM plugins
+
+ --> GunDo
+     Visual Undo in vim with diff's to check the differences
+ 
+ --> Pytest
+     Runs your Python tests in Vim.
+
+ --> Commant-T
+     Allows easy search and opening of files within a given path-
+ 
+ --> Snipmate
+     Configurable snippets to avoid re-typing common comands
+
+ --> PyFlakes
+     Underlines and displays errors with Python on-the-fly
+
+ --> Fugitive
+     Interface with git from vim
+
+ --> Git
+     Syntax highlighting for git config files
+
+ --> Fuzzy Finder
+     FuzzyFinder provides convenient ways to quickly reach the buffer/file/command/bookmark/tag you want. 
+
+ --> Pydoc
+    Opens up pydoc within vim
+
+ --> Surround
+    Allows you to surround text with open/close tags
+
+ --> Py.test
+    Run py.test test's from within vim
+
+ --> MakeGreen
+    Generic test runner that works with nose
+
+##### Mapping Keys #####
+
+,td      = Show TaskList
+,8       = Check PEP8
+,c       = Open quick window
+,cc      = Close quick window
+,dt      = Run Django tests
+,tf      = Run Pytest file
+,tc      = Run Pytest class
+,tm      = Run Pytest method
+,tn      = Run Pytest next
+,tp      = Run Pytest previous
+,te      = Run Pytest error
+,fb      = Fuzzy Buffer
+,ff      = Fuzzy File buffer
+,fd      = Fuzzy Dir buffer
+,n       = Open NERDTree
+,nc      = Close NERDTree
+,d       = Remove duplicated lines
+,g       = Open Gundo window
+,j       = Jump to definition of whatever the cursor is on
+,r       = Rename whatever the cursor is on (including refences to it)
+CTRL+l   = Clear highlights 
+... etc
 

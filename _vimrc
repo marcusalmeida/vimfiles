@@ -100,25 +100,25 @@ set sidescroll=1
 
 " Wild Mode
 " Make cmdline tab completation similar to bash
-set wildmode=list:longest
+set wildmode=full
 " Enable ctrl-n and ctrl-p to scroll thru matches
 set wildmenu
 
 " Ignore these files when completation
-set wildignore+=*.o, *.obj,.git,*.pyc 
+set wildignore+=*.o,*.obj,.git,*.pyc 
 
 " Setting colorscheme
-colorscheme evening
+colorscheme desert
 
 """" Messages, Info, Status
-189 set ls=2                    " allways show status line
-190 set vb t_vb=                " Disable all bells.  I hate ringing/flashing.
-191 set confirm                 " Y-N-C prompt if closing with unsaved changes
-192 set showcmd                 " Show incomplete normal mode commands as I type.
-193 set report=0                " : commands always print changed line count
-194 set shortmess+=a            " Use [+]/[RO]/[w] for modified/readonly/written
-195 set ruler                   " Show some info, even without statuslines.
-196 set laststatus=2            " Always show statusline, even if only 1 window.
+set ls=2                    " allways show status line
+set vb t_vb=                " Disable all bells.  I hate ringing/flashing.
+set confirm                 " Y-N-C prompt if closing with unsaved changes
+set showcmd                 " Show incomplete normal mode commands as I type.
+set report=0                " : commands always print changed line count
+set shortmess+=a            " Use [+]/[RO]/[w] for modified/readonly/written
+set ruler                   " Show some info, even without statuslines.
+set laststatus=2            " Always show statusline, even if only 1 window.
 " Setting status line
 set statusline=%F%m%r%h%w
 set statusline+=\ [FORMAT=%{&ff}]
@@ -135,8 +135,8 @@ set statusline+=%{StatuslineLongLineWarning()}
 set statusline+=%*]
 
 " displays tabs with :set list & displays when a line runs off-screen
-set listchars=tab:>-,eol:$,trail:-,precedes:<,extends:>
-set list
+"set listchars=tab:>-,eol:$,trail:-,precedes:<,extends:>
+"set list
 
 """ Searching and Patterns
 set ignorecase              " Default to using case insensitive searches,
@@ -169,7 +169,7 @@ set grepprg=ack-grep
 
 " Insert completation
 " don't select first item, follow typing in autocomplete
-set completeopt=menuone, longest, preview
+set completeopt=menuone,longest,preview
 set pumheight=6                   "Keep a small completation window
 
 " Show a line at column 79
@@ -208,6 +208,13 @@ imap { {}<left>
 imap ( ()<left>
 imap [ []<left>
 
+" ===================================================================== "
+" Setting this when need to log vim.
+" mkdir ~/.log/vim
+" ===================================================================== "
+" set verbosefile=~/.log/vim/verbose.log
+" set verbose=2
+" ===================================================================== "
 
 " ===================================================================== "
 " Pathogen - Allows us to organize our vim plugins
@@ -221,11 +228,24 @@ filetype on
 " turn on synthax highlighting
 syntax on
 
+
 " ##### KEY MAPPING ##### 
 let mapleader=","
 
 " Toggle the task list
 map <leader>td <Plug>TaskList
+
+" Run py.test's
+nmap <silent><Leader>tf <Esc>:Pytest file<CR>
+nmap <silent><Leader>tc <Esc>:Pytest class<CR>
+nmap <silent><Leader>tm <Esc>:Pytest method<CR>
+nmap <silent><Leader>tn <Esc>:Pytest next<CR>
+nmap <silent><Leader>tp <Esc>:Pytest previous<CR>
+nmap <slient><Leader>te <Esc>:Pytest error<CR>
+
+" Run django tests
+map <leader>dt :set makeprg=python\ manage.py \ test\|:call MakeGreen()<CR>
+
 
 " Run pep8
 let g:pep8_map='<leader>8'
@@ -233,7 +253,7 @@ let g:pep8_map='<leader>8'
 " ,v  brings up my .vimrc
 " ,V reload the .vimrc -- makign all change active (have to save first)
 map <leader>v :sp ~/.vimrc<CR><C-W>_
-map <silent> <leader> V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded"<CR>
+map <silent> <leader>V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded"<CR>
 
 " open/close the quick window$
 nmap <leader>c :copen<CR>
@@ -262,13 +282,13 @@ map <C-n> :browse confirm e<cr>
 map <C-S-s> :browse confirm saveas<cr>
 
 " FufBuffer
-map <C-A-r> :FufBuffer<cr>
+map <leader>fb :FufBuffer<cr>
 
 " FufFile 
-map <C-S-r> :FufFile<cr>
+map <leader>ff :FufFile<cr>
 
 " FufDir
-map <C-S-d> :FufDir<cr>
+map <leader>fd :FufDir<cr>
 
 " NERDTree Close
 map <leader>n :NERDTree<cr>
@@ -439,7 +459,7 @@ endif
 " ===================================================================
 "au BufRead *.py compiler nose
 au FileType python set omnifunc=pythoncomplete#Complete
-au BufRead *py set emf=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
+au BufRead *py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
 
 " Don't let pyflakes use the quickfix window
 let g:pyflakes_use_quickfix = 0
@@ -474,7 +494,6 @@ let g:SuperTabDefaultCompletionType = "context"
 filetype plugin on 
 filetype indent on 
 
-
 " Fuzzy Finder Settings
 let g:fuzzy_matching_limit = 20
 let g:fuzzy_ignore="*.ico;*.png;*PNG;*.jpg;*.JPG;*.GIF;*.gif;tmp/**;log/**"
@@ -483,7 +502,7 @@ let g:fuf_tag_cache_dir = ''
 let g:fuf_taggedfile_cache_dir = ''
 
 " NERDTree ignore files
-let NERDTreeIgnore = ['\.pyc$']
+let NERDTreeIgnore = ['\.pyc$','\.obj$', '\.o$']
 
 " Start NERDTree when in gui_gnome  MODE
 if has("gui_running")
