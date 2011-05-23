@@ -212,8 +212,8 @@ imap [ []<left>
 " Setting this when need to log vim.
 " mkdir ~/.log/vim
 " ===================================================================== "
-set verbosefile=~/.log/vim/verbose.log
-set verbose=2
+" set verbosefile=~/.log/vim/verbose.log
+" set verbose=2
 " ===================================================================== "
 
 " ===================================================================== "
