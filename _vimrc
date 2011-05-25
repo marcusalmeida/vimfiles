@@ -162,7 +162,9 @@ set ttymouse=xterm2
 set title
 
 " Replace the default rep programa with ack
-set grepprg=ack-grep
+let g:ackprg="ack-grep -H --column"
+set grepprg=ack-grep 
+set grepformat=%f:%l:%c:%m
 
 " Auto change the directory to the current file I'm working on
 "autocmd BufEnter * lcd %:p:h
@@ -212,8 +214,8 @@ imap [ []<left>
 " Setting this when need to log vim.
 " mkdir ~/.log/vim
 " ===================================================================== "
-" set verbosefile=~/.log/vim/verbose.log
-" set verbose=2
+"set verbosefile=~/.log/vim/verbose.log
+"set verbose=2
 " ===================================================================== "
 
 " ===================================================================== "
@@ -316,8 +318,7 @@ map <A-k> :cprevious<CR>
 map ,d <esc>:%s/\(^\n\{2,}\)/\r/g<CR>
 
 " Ack searching 
-nmap <leader>a <ESC>:Ack! 
-
+nmap <leader>a <ESC>:Ack!
 " Load the Gundo window
 map <leader>g :GundoToggle<CR>
 
