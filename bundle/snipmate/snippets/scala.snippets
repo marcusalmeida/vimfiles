@@ -1,0 +1,251 @@
+# 
+# scala.snippet 
+# Contributed to snipMate by: Richard M. Emberson
+# Sept 15 2010
+# Edit at will 
+# 
+# main
+snippet main
+	def main (args: Array[String]) {
+	  ${1:// code }
+	}
+# object
+snippet ob object A
+	object ${1} {
+	  ${2:// code }
+	}
+snippet ob object A extends B
+	object ${1} extends ${2} {
+	  ${3:// code }
+	}
+# class
+snippet cl class A
+	class ${1} {
+	  ${2:// code }
+	}
+snippet cl class A extends B
+	class ${1} extends ${2} {
+	  ${3:// code }
+	}
+# trait
+snippet tr trait A
+	trait ${1} {
+	  ${2:// code }
+	}
+snippet tr trait A extends B
+	trait ${1} extends ${2} {
+	  ${3:// code }
+	}
+# method
+snippet def method signature def m: T 
+	def ${1}: ${2}
+snippet def method signature def m(): T 
+	def ${1}(): ${2}
+snippet def method signature def m(one: T1): T 
+	def ${1}(${2}: ${3}): ${4}
+snippet def method signature def m(one: T1, two: T2): T 
+	def ${1}(${2}: ${3}, ${4}: ${5}): ${6}
+snippet def method signature multi-line def m(one: T1, two: T2): T 
+	def ${1}(${2}: ${3}, 
+	         ${4}: ${5},
+	         ${6}: ${7}): ${8}
+snippet def method and body def m: T 
+	def ${1}: ${2} = {
+	  ${3:// code }
+	}
+snippet def method and body def m(): T 
+	def ${1}(): ${2} = {
+	  ${3:// code }
+	}
+snippet def method and body def m(one: T1): T 
+	def ${1}(${2}: ${3}): ${4} = {
+	  ${5:// code }
+	}
+snippet def method and body def m(one: T1, two: T2): T 
+	def ${1}(${2}: ${3}, ${4}: ${5}): ${6} = {
+	  ${7:// code }
+	}
+snippet def method and body multi-line def a(one: T1, two: T2): T 
+	def ${1}(${2}: ${3}, 
+	         ${4}: ${5},
+	         ${6}: ${7}): ${8} = {
+	  ${9:// code }
+	}
+# if-else
+snippet if if (cond) expr
+	if (${1: cond}) ${2:// code}
+snippet if if (cond) { expr }
+	if (${1: cond}) {
+	  ${2:// code }
+	}
+snippet if if (cond) expr else expr
+	if (${1: cond}) ${2:// code}
+	else ${3:// code}
+snippet if if (cond) { expr } else { expr }
+	if (${1: cond}) {
+	  ${2:// code }
+	} else {
+	  ${3:// code }
+	} 
+snippet if if (cond) expr else if (cond) expr else expr
+	if (${1: cond})
+	  ${2:// code }
+	else if (${3: cond})
+	  ${4:// code }
+	else
+	  ${5:// code }
+snippet if if (cond) { expr } else if (cond) { expr } else { expr }
+	if (${1: cond}) {
+	  ${2:// code }
+	} else if (${3: cond}) {
+	  ${4:// code }
+	} else {
+	  ${5:// code }
+	} 
+# try-catch-finally
+snippet try try { expr } catch { case ex: Exception => expr }
+	try {
+	  ${1:// code }
+	} catch {
+	  case ex: Exception =>
+	    ${2:// code }
+	}
+snippet try try { expr } catch { case ex: Exception => expr } finally { expr }
+	try {
+	  ${1:// code }
+	} catch {
+	  case ex: Exception =>
+	    ${2:// code }
+	} finally {
+	  ${3:// code }
+	} 
+snippet try try { expr } finally { expr }
+	try {
+	  ${1:// code }
+	} finally {
+	  ${3:// code }
+	} 
+snippet ma expr match { case: m => expr case: m => expr case: _ => expr} 
+	${1} match {
+	  case: ${2} =>
+	    ${3:// code }
+	  case: ${4} =>
+	    ${5:// code }
+	  case: _ =>
+	    ${6:// code }
+	} 
+snippet ma expr match { case: Some(m) => expr case: None => expr } 
+	${1} match {
+	  case: Some(${2}) =>
+	    ${3:// code }
+	  case: None =>
+	    ${4:// code }
+	} 
+# case
+snippet ca case: value => expr 
+	case ${1} => ${2}
+snippet ca case: value => multi-line-expr
+	case ${1} => 
+	  ${2}
+# while
+snippet wh while (cond) { expr }
+	while (${1:cond}) {
+	  ${2:// code }
+	} 
+snippet wh var i = 0 while (i < cond) { expr i += 1}
+	var ${1:i} = ${2:0}
+	while (${3:$1} < ${4:expr}) {
+	  ${5:// code }
+	  ${6:$1 += 1}
+	} 
+# do-while
+snippet do do { expr } while (cond)
+	do {
+	  ${1:// code }
+	} while (${2:cond})
+# for
+snippet for for (x <- xs) expr
+	for (${1:name} <- ${2:$1s}) ${3:// code }
+snippet for for (x <- xs) { expr }
+	for (${1:name} <- ${2:$1s}) {
+	  ${3:// code }
+	} 
+snippet for for (x <- xs) yield expr
+	for (${1:name} <- ${2:$1s}) yield ${3:// code }
+snippet for for (x <- xs) { yield expr }
+	for (${1:name} <- ${2:$1s}) {
+	  yield ${3:// code }
+	} 
+snippet for for (x <- xs if cond expr) yield expr
+	for {
+	  ${1:name} <- ${2:$1s}
+	  if ${3:cond}
+	  ${4:// expr}
+	} yield ${5:// code }
+# xml
+snippet < <name>content</name>
+	<${1:name}>${2}</${3:$1}>
+snippet < multi-line <name>content</name>
+	<${1:name}>
+	  ${2}
+	</${3:$1}>
+# short cuts
+snippet pa package
+	package
+snippet pr protected
+	protected
+snippet pr private
+	private
+snippet pro
+	protected
+snippet pri
+	private
+snippet fi
+	final
+snippet ab
+	abstract
+snippet ov
+	override
+snippet su
+	super
+snippet re
+	return
+snippet clO 
+	classOf[${1}]
+snippet isI
+	isInstanceOf[${1}]
+snippet asI
+	asInstanceOf[${1}]
+snippet th
+	throw 
+snippet sy
+	synchronized
+snippet im
+	import
+snippet j.l java.lang.String
+	java.lang.${1:class}
+snippet j.l java.lang.{ String => JString }
+	java.lang.{ ${1:class} => J${2:$1} }
+snippet j.u
+	java.util
+snippet j.u java.util.Map
+	java.util.${1:class}
+snippet j.l java.util.{ Map => JMap }
+	java.util.{ ${1:class} => J${2:$1} }
+snippet j.i java.io.Stream
+	java.io.${1:class}
+snippet j.i java.io.{ Stream => JStream }
+	java.io.{ ${1:class} => J${2:$1} }
+snippet as assert boolean
+	assert(${1:test})
+snippet as assert boolean message
+	assert(${1:test}, "${2: Failure message}")
+snippet as assume boolean
+	assume(${1:test})
+snippet as assume boolean message
+	assume(${1:test}, "${2: Failure message}")
+snippet re require boolean
+	require(${1:test})
+snippet re require boolean message
+	require(${1:test}, "${2: Failure message}")
+# bottom

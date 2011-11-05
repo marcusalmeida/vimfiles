@@ -6,12 +6,14 @@
 " Ack
 " Rake & Ruby for command-t
 " nose, django-nose
+" pylint
 
 " ==========================================================
 " Plugins included
 " ==========================================================
 " Pathogen
 "     Better Management of VIM plugins
+"
 " GunDo
 "     Visual Undo in vim with diff's to check the differences
 "
@@ -48,7 +50,9 @@
 " MakeGreen
 "    Generic test runner that works with nose
 "
-
+" PyLint
+"    Analyzes Python source code looking for bugs and signs of poor quality.
+"
 
 " ############ SETTINGS ###################
 " This must be first, because other otpions as a side effects.
@@ -91,7 +95,7 @@ set vb
 set showbreak=... 
 
 " Setting font 
-set guifont=Courier\ New\ 8
+set guifont=Courier\ New\ 7
 
 " Vertical/horizontal scroll off setting 
 set scrolloff=3
@@ -108,7 +112,7 @@ set wildmenu
 set wildignore+=*.o,*.obj,.git,*.pyc 
 
 " Setting colorscheme
-colorscheme desert
+colorscheme evening
 
 """" Messages, Info, Status
 set ls=2                    " allways show status line
@@ -328,7 +332,6 @@ map <leader>j :RopeGotoDefinition<CR>
 " Rename whatever the cursor is on (including refences to it)
 map <leader>r :RopeRename
 
-
 " ############ FUNCTIONS ###################
 " reacalculate the traling whitespace warning when idle, and after saving
 autocmd cursorhold,bufwritepost * unlet! b:statusline_trailing_space_warning
@@ -507,12 +510,15 @@ let g:fuf_taggedfile_cache_dir = ''
 " NERDTree ignore files
 let NERDTreeIgnore = ['\.pyc$','\.obj$', '\.o$']
 
+" Setting pylint
+autocmd FileType python compiler pylint
+
 " Start NERDTree when in gui_gnome  MODE
 if has("gui_running")
     set guicursor=a:blinkon0 " Disable blinking cursor
     set columns=100 lines=38 " Default window size
     if has("gui_gnome")      
-        colorscheme evening
+        colorscheme railscasts
         autocmd VimEnter * NERDTree
     endif
 endif
