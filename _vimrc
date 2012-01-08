@@ -126,6 +126,7 @@ set laststatus=2            " Always show statusline, even if only 1 window.
 " Setting status line
 set statusline=%F%m%r%h%w
 set statusline+=\ [FORMAT=%{&ff}]
+set statusline+=\ %{VirtualEnvStatusline()}
 set statusline+=\ [TYPE=%Y]
 set statusline+=\ [ENCODING=\%{&fenc}]
 set statusline+=\ [ASCII=\%03.3b]

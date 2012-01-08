@@ -1,4 +1,10 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =2
+let g:netrw_dirhist_cnt =8
 let g:netrw_dirhist_1='/home/marcus/sandbox/python/letucce/post-bdd-django'
 let g:netrw_dirhist_2='/home/marcus/sandbox/python/letucce/djangoproject'
+let g:netrw_dirhist_3='/home/marcus/repositories/git/Globo-Promocoes'
+let g:netrw_dirhist_4='/home/marcus/sandbox/python/tdd'
+let g:netrw_dirhist_5='/home/marcus/sandbox/python/django/tdd'
+let g:netrw_dirhist_6='/home/marcus/repositories/git/Globo-Promocoes'
+let g:netrw_dirhist_7='/home/marcus/.vim/bundle/vim-virtualenv/plugin'
+let g:netrw_dirhist_8='/home/marcus/repositories/git/Globo-Promocoes'
