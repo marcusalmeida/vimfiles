@@ -226,6 +226,7 @@ imap [ []<left>
 " Pathogen - Allows us to organize our vim plugins
 " ====================================================================  "
 filetype off
+call pathogen#infect()
 call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
 
@@ -264,8 +265,8 @@ map <leader>v :sp ~/.vimrc<CR><C-W>_
 map <silent> <leader>V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 
 " open/close the quick window$
-nmap <leader>c :copen<CR>
-nmap <leader>cc :cclose<CR>
+nmap <leader>o :copen<CR>
+nmap <leader>oo :cclose<CR>
 
 " For when we forget to use sudo to open/edit a file
 cmap w!! w !sudo tee % >/dev/null
