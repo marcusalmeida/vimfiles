@@ -53,6 +53,13 @@
 " PyLint
 "    Analyzes Python source code looking for bugs and signs of poor quality.
 "
+" Conque
+" Conque is a Vim plugin which allows you to run interactive programs, such as
+" bash on linux or powershell.exe on Windows, inside a Vim buffer. In other
+" words it is a terminal emulator which uses a Vim buffer to display the
+" program output. 
+" http://code.google.com/p/conque
+" 
 
 " ############ SETTINGS ###################
 " This must be first, because other otpions as a side effects.
@@ -334,6 +341,10 @@ map <leader>j :RopeGotoDefinition<CR>
 " Rename whatever the cursor is on (including refences to it)
 map <leader>r :RopeRename
 
+" Run bash shell 
+map <leader>sh :ConqueTermSplit bash<CR>
+map <leader>ip :ConqueTermSplit ipython<CR>
+
 " ############ FUNCTIONS ###################
 " reacalculate the traling whitespace warning when idle, and after saving
 autocmd cursorhold,bufwritepost * unlet! b:statusline_trailing_space_warning
@@ -514,6 +525,26 @@ let NERDTreeIgnore = ['\.pyc$','\.obj$', '\.o$']
 
 " Setting pylint
 autocmd FileType python compiler pylint
+
+" Settings for Conque Shell plugin
+" http://code.google.com/p/conque
+"" Fast Mode
+let g:ConqueTerm_FastMode = 0
+
+"" Color support 
+let g:ConqueTerm_Color = 1
+
+"" Keep updating terminal buffer
+let g:ConqueTerm_ReadUnfocused = 1
+
+"" Insert mode when entering buffer
+let g:ConqueTerm_InsertOnEnter = 1
+
+"" Hide start messages
+let g:ConqueTerm_StartMessages = 0
+
+"" Close buffer when program exits
+let g:ConqueTerm_CloseOnEnd = 1
 
 " Start NERDTree when in gui_gnome  MODE
 if has("gui_running")
