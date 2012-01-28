@@ -500,6 +500,7 @@ endfunction
 function! <SID>StripTrailingWhitespaces()
     :call Preserve("%s/\\s\\+$//e")
 endfunction
+nmap <leader>$ :call <SID>StripTrailingWhitespaces()<CR>
 
 " ==================================================================
 " Deleting blank lines
@@ -512,6 +513,7 @@ endfunction
 function! <SID>DeleteBlankLines()
     :call Preserve(":g/^$/de")
 endfunction
+nmap <leader>0 :call <SID>DeleteBlankLines()<CR>
 
 " ===================================================================
 " Python
@@ -541,6 +543,11 @@ if has("autocmd")
     autocmd FileType c,python,java,javascript,html,css autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
     autocmd FileType html,css autocmd BufWritePre <buffer> :call <SID>DeleteBlankLines()
 endif
+
+"snipmate setup
+try
+  source ~/.vim/bundle/snipmate/snippets/support_functions.vim
+endtry
 
 " ==========================================================
 " SuperTab - Allows us to get code completion with tab
