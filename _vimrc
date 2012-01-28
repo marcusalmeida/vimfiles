@@ -351,6 +351,15 @@ inoremap <C-k> <Esc>:m-2<CR>==gi
 vnoremap <C-j> :m'>+<CR>gv=gv
 vnoremap <C-k> :m-2<CR>gv=gv
 
+"key mapping for window navigation
+"map <C-h> <C-w>h
+"map <C-j> <C-w>j
+"map <C-k> <C-w>k
+"map <C-l> <C-w>l
+
+"key mapping for tab navigation
+"nmap <Tab> gt
+"nmap <S-Tab> gT
 
 " ############ FUNCTIONS ###################
 " reacalculate the traling whitespace warning when idle, and after saving
