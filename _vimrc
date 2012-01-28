@@ -57,9 +57,9 @@
 " Conque is a Vim plugin which allows you to run interactive programs, such as
 " bash on linux or powershell.exe on Windows, inside a Vim buffer. In other
 " words it is a terminal emulator which uses a Vim buffer to display the
-" program output. 
+" program output.
 " http://code.google.com/p/conque
-" 
+"
 
 " ############ SETTINGS ###################
 " This must be first, because other otpions as a side effects.
@@ -99,12 +99,12 @@ set showmode
 set vb
 
 " Show breakline
-set showbreak=... 
+set showbreak=...
 
-" Setting font 
+" Setting font
 set guifont=Courier\ New\ 7
 
-" Vertical/horizontal scroll off setting 
+" Vertical/horizontal scroll off setting
 set scrolloff=3
 set sidescrolloff=7
 set sidescroll=1
@@ -116,7 +116,7 @@ set wildmode=full
 set wildmenu
 
 " Ignore these files when completation
-set wildignore+=*.o,*.obj,.git,*.pyc 
+set wildignore+=*.o,*.obj,.git,*.pyc
 
 " Setting colorscheme
 colorscheme evening
@@ -141,9 +141,9 @@ set statusline+=\ [%p%%]
 set statusline+=\ [%l,%L]
 set statusline+=\ [COL=\%c]
 set statusline+=\ [*ERROR=%#error#
-set statusline+=%{StatuslineTabWarning()} 
-set statusline+=%{StatuslineTrailingSpaceWarning()} 
-set statusline+=%{StatuslineLongLineWarning()} 
+set statusline+=%{StatuslineTabWarning()}
+set statusline+=%{StatuslineTrailingSpaceWarning()}
+set statusline+=%{StatuslineLongLineWarning()}
 set statusline+=%*]
 
 " displays tabs with :set list & displays when a line runs off-screen
@@ -175,7 +175,7 @@ set title
 
 " Replace the default rep programa with ack
 let g:ackprg="ack-grep -H --column"
-set grepprg=ack-grep 
+set grepprg=ack-grep
 set grepformat=%f:%l:%c:%m
 
 " Auto change the directory to the current file I'm working on
@@ -244,7 +244,7 @@ filetype on
 syntax on
 
 
-" ##### KEY MAPPING ##### 
+" ##### KEY MAPPING #####
 let mapleader=","
 
 " Toggle the task list
@@ -263,7 +263,6 @@ nmap <silent><Leader>tv <Esc>:Pytest verbose<CR>
 " Run django tests
 map <leader>dt :set makeprg=python\ manage.py\ test\|:call MakeGreen()<CR>
 
-
 " Run pep8
 let g:pep8_map='<leader>8'
 
@@ -279,9 +278,8 @@ nmap <leader>oo :cclose<CR>
 " For when we forget to use sudo to open/edit a file
 cmap w!! w !sudo tee % >/dev/null
 
-
 " save file (ctrl-s)
-map <C-s> :w<CR> 
+map <C-s> :w<CR>
 
 " copy selected text (ctrl-c)
 vmap <C-c> +y
@@ -301,7 +299,7 @@ map <C-S-s> :browse confirm saveas<cr>
 " FufBuffer
 map <leader>fb :FufBuffer<cr>
 
-" FufFile 
+" FufFile
 map <leader>ff :FufFile<cr>
 
 " FufDir
@@ -313,7 +311,7 @@ map <leader>n :NERDTree<cr>
 " NERDTree Open
 map <leader>nc :NERDTreeClose<cr>
 
-" Buffer cycling 
+" Buffer cycling
 map <C-right> <ESC>:bn<cr>
 map <C-left> <ESC>:bp<cr>
 
@@ -330,7 +328,7 @@ map <A-k> :cprevious<CR>
 " Key to remove duplicated lines.
 map ,d <esc>:%s/\(^\n\{2,}\)/\r/g<CR>
 
-" Ack searching 
+" Ack searching
 nmap <leader>a <ESC>:Ack!
 " Load the Gundo window
 map <leader>g :GundoToggle<CR>
@@ -341,9 +339,18 @@ map <leader>j :RopeGotoDefinition<CR>
 " Rename whatever the cursor is on (including refences to it)
 map <leader>r :RopeRename
 
-" Run bash shell 
+" Run bash shell
 map <leader>sh :ConqueTermSplit bash<CR>
 map <leader>ip :ConqueTermSplit ipython<CR>
+
+" Mapping to move lines
+nnoremap <C-j> :m+<CR>==
+nnoremap <C-k> :m-2<CR>==
+inoremap <C-j> <Esc>:m+<CR>==gi
+inoremap <C-k> <Esc>:m-2<CR>==gi
+vnoremap <C-j> :m'>+<CR>gv=gv
+vnoremap <C-k> :m-2<CR>gv=gv
+
 
 " ############ FUNCTIONS ###################
 " reacalculate the traling whitespace warning when idle, and after saving
@@ -377,14 +384,14 @@ autocmd cursorhold,bufwritepost * unlet! b:statusline_tab_warning
 
 " Return '[&et]' if &et is set wrong
 " Return '[mixed-indenting]' if space and tab are used to indent
-" Return an empty string if everthing is fin 
+" Return an empty string if everthing is fin
 function! StatuslineTabWarning()
     if !exists("b:statusline_tab_warning")
         let tabs = search('^\t', 'nw') != 0
         let spaces = search('^ ', 'nw') != 0
 
         if tabs && spaces
-           let b:statusline_tab_warning = '[mixed-indenting]'
+            let b:statusline_tab_warning = '[mixed-indenting]'
         elseif (spaces && !&et) || (tabs && &et)
             let b:statusline_tab_warning = '[&et]'
         else
@@ -397,7 +404,7 @@ endfunction
 " Recalculate the long line warning whe idle and after saving
 autocmd cursorhold,bufwritepost * unlet! b:statusline_long_line_warning
 
-" Return a warinig for "long lines" where "long" is either &textwidth or 80 
+" Return a warinig for "long lines" where "long" is either &textwidth or 80
 " (if no &textwidth is set)
 " Return '' if no long lines
 " Return '[#x,my,$z] if long lines ar found, ware x is the number of long
@@ -408,9 +415,9 @@ function! StatuslineLongLineWarning()
         let long_line_lens = s:LongLines()
 
         if len(long_line_lens) > 0
-            let b:statusline_long_line_warning = "[" . 
-                        \ '#' . len(long_line_lens) . "," . 
-                        \ 'm' . s:Median(long_line_lens) . "," . 
+            let b:statusline_long_line_warning = "[" .
+                        \ '#' . len(long_line_lens) . "," .
+                        \ 'm' . s:Median(long_line_lens) . "," .
                         \ '$' . max(long_line_lens) . ']'
         else
             let b:statusline_long_line_warning = ""
@@ -420,37 +427,37 @@ endfunction
 
 " Return a list containing the lengths of the long lines in this buffer
 function! s:LongLines()
-  let threshold = (&tw ? &tw : 100)
-  let spaces = repeat(" ", &ts)
+    let threshold = (&tw ? &tw : 100)
+    let spaces = repeat(" ", &ts)
 
-  let long_line_lens = []
+    let long_line_lens = []
 
-  let i = 1
-  while i <= line("$")
-    let len = strlen(substitute(getline(i) ,'\t', spaces, 'g'))
-    if len > threshold
-        call add(long_line_lens, len)
-    endif
-    let i += 1
-  endwhile
-  return long_line_lens
+    let i = 1
+    while i <= line("$")
+        let len = strlen(substitute(getline(i) ,'\t', spaces, 'g'))
+        if len > threshold
+            call add(long_line_lens, len)
+        endif
+        let i += 1
+    endwhile
+    return long_line_lens
 endfunction
 
 " Find the median of the given array of numbers
 function! s:Median(nums)
     let nums = sort(a:nums)
     let l = len(nums)
-   
+
     " Binary search
     if l % 2 == 1
         let i = (l-1) / 2
         return nums[i]
-     else
+    else
         return (nums[l/2] + nums[(l/2) - 1]) / 2
     endif
 endfunction
 
-" Define :HighlightLongLines comman to ghighlight the offending parts of 
+" Define :HighlightLongLines comman to ghighlight the offending parts of
 " lines that are longer than the specified lgnth (defaulting to 100)
 command! -nargs=? HighlihgtLongLines call s:HighlightLongLines('<args>')
 function! s:HighlightLongLines(width)
@@ -465,26 +472,61 @@ endfunction
 " Reaload .vimrc
 " Soruce the .vimrc or _vimrc file
 if &term == "win32" || "pcterm" || has("gui_win32")
-  map ,v e: $HOME/_vimrc
-  nmap <F12> :<C-u>source ~/_vimrc <BAR> echo "vimrc reloaded"<CR>
+    map ,v e: $HOME/_vimrc
+    nmap <F12> :<C-u>source ~/_vimrc <BAR> echo "vimrc reloaded"<CR>
 else
-  map ,v :e $HOME/.vimrc<CR>
-  nmap <F12> :<C-u>source .vimrc <BAR> echo "vimrc realoaded"<CR>
+    map ,v :e $HOME/.vimrc<CR>
+    nmap <F12> :<C-u>source .vimrc <BAR> echo "vimrc realoaded"<CR>
 endif
 
+" ==================================================================
+" Preserve
+" =================================================================
+function! Preserve(command)
+    " Preparation: save last search, and cursor position.
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    " Do the business:
+    execute a:command
+    " Clean up: restore previous search history, and cursor position
+    let @/=_s
+    call cursor(l,c)
+endfunction
+
+" ==================================================================
+" Tidying Whitespaces
+" ==================================================================
+function! <SID>StripTrailingWhitespaces()
+    :call Preserve("%s/\\s\\+$//e")
+endfunction
+
+" ==================================================================
+" Deleting blank lines
+" ==================================================================
+"Function: <SID>DeleteBlankLines
+"Desc: delete blank lines on buffer
+"
+"Arguments:
+"
+function! <SID>DeleteBlankLines()
+    :call Preserve(":g/^$/de")
+endfunction
 
 " ===================================================================
 " Python
 " ===================================================================
-"au BufRead *.py compiler nose
-au FileType python set omnifunc=pythoncomplete#Complete
-au BufRead *py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd BufRead *py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
+
+" Setting pylint
+autocmd FileType python compiler pylint
 
 " Don't let pyflakes use the quickfix window
 let g:pyflakes_use_quickfix = 0
 
 " turn of hlsearch and update pyflakes on enter
-au BufRead,BufNewFile *.py nnoremap <buffer><CR> :nohlsearch\|:call PressedEnter()<cr>
+autocmd BufRead,BufNewFile *.py nnoremap <buffer><CR> :nohlsearch\|:call PressedEnter()<cr>
 nnoremap <buffer><CR> :nohlsearch\|:call PressedEnter()<cr>
 
 " Clear the search buffer when hitting return and update pyflake checks
@@ -495,10 +537,10 @@ function! PressedEnter()
     end
 endfunction
 
-" ==========================================================
-" Javascript
-" ==========================================================
-au BufRead *.js set makeprg=jslint\ %$
+if has("autocmd")
+    autocmd FileType c,python,java,javascript,html,css autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+    autocmd FileType html,css autocmd BufWritePre <buffer> :call <SID>DeleteBlankLines()
+endif
 
 " ==========================================================
 " SuperTab - Allows us to get code completion with tab
@@ -506,12 +548,11 @@ au BufRead *.js set makeprg=jslint\ %$
 " Try different completion methods depending on its context
 let g:SuperTabDefaultCompletionType = "context"
 
-
 " ############### PLUGINS SETTINGS ##################
 
 " load ftpplugins and indent files
-filetype plugin on 
-filetype indent on 
+filetype plugin on
+filetype indent on
 
 " Fuzzy Finder Settings
 let g:fuzzy_matching_limit = 20
@@ -523,15 +564,13 @@ let g:fuf_taggedfile_cache_dir = ''
 " NERDTree ignore files
 let NERDTreeIgnore = ['\.pyc$','\.obj$', '\.o$']
 
-" Setting pylint
-autocmd FileType python compiler pylint
 
 " Settings for Conque Shell plugin
 " http://code.google.com/p/conque
 "" Fast Mode
 let g:ConqueTerm_FastMode = 0
 
-"" Color support 
+"" Color support
 let g:ConqueTerm_Color = 1
 
 "" Keep updating terminal buffer
@@ -550,7 +589,7 @@ let g:ConqueTerm_CloseOnEnd = 1
 if has("gui_running")
     set guicursor=a:blinkon0 " Disable blinking cursor
     set columns=100 lines=38 " Default window size
-    if has("gui_gnome")      
+    if has("gui_gnome")
         colorscheme railscasts
         autocmd VimEnter * NERDTree
     endif
