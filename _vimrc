@@ -607,6 +607,6 @@ if has("gui_running")
     set columns=100 lines=38 " Default window size
     if has("gui_gnome")
         colorscheme railscasts
-        autocmd VimEnter * NERDTree
+        "autocmd VimEnter * NERDTree
     endif
 endif
