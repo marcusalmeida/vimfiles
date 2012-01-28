@@ -132,6 +132,7 @@ set ruler                   " Show some info, even without statuslines.
 set laststatus=2            " Always show statusline, even if only 1 window.
 " Setting status line
 set statusline=%F%m%r%h%w
+set statusline+=\ %{fugitive#statusline()}
 set statusline+=\ [FORMAT=%{&ff}]
 set statusline+=\ %{VirtualEnvStatusline()}
 set statusline+=\ [TYPE=%Y]
