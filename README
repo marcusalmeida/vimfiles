@@ -52,6 +52,14 @@ Files from my .vim folder.
 
  --> MakeGreen
     Generic test runner that works with nose
+ 
+ --> Conque
+     Conque is a Vim plugin which allows you to run interactive programs, such as
+  bash on linux or powershell.exe on Windows, inside a Vim buffer. In other
+  words it is a terminal emulator which uses a Vim buffer to display the
+  program output.
+  http://code.google.com/p/conque
+
 
 ##### Mapping Keys #####
 
@@ -75,6 +83,10 @@ Files from my .vim folder.
 ,g       = Open Gundo window
 ,j       = Jump to definition of whatever the cursor is on
 ,r       = Rename whatever the cursor is on (including refences to it)
-CTRL+l   = Clear highlights 
+,bash    = Start bash console
+CTRL+l   = Clear highlights
+CTRL+j   = move line down
+CRTL+k   = move line up
+
 ... etc
 
