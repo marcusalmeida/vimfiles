@@ -552,12 +552,19 @@ endfunction
 if has("autocmd")
     autocmd FileType c,python,java,javascript,html,css autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
     autocmd FileType html,css autocmd BufWritePre <buffer> :call <SID>DeleteBlankLines()
+    autocmd BufReadPost fugitive://* set bufhidden=delete
 endif
 
 "snipmate setup
 try
   source ~/.vim/bundle/snipmate/snippets/support_functions.vim
 endtry
+autocmd vimenter * call s:SetupSnippets()
+function s:SetupSnippets()
+    try
+        call ExtractSnips("~/.vim/bundle/snipmate/snippets/html", "htmldjango")
+    endtry
+endfunction
 
 " ==========================================================
 " SuperTab - Allows us to get code completion with tab
