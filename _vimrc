@@ -102,7 +102,7 @@ set vb
 set showbreak=...
 
 " Setting font
-set guifont=Courier\ New\ 7
+set guifont=Courier\ New\ 8
 
 " Vertical/horizontal scroll off setting
 set scrolloff=3
@@ -119,7 +119,7 @@ set wildmenu
 set wildignore+=*.o,*.obj,.git,*.pyc
 
 " Setting colorscheme
-colorscheme evening
+colorscheme transparent
 
 """" Messages, Info, Status
 set ls=2                    " allways show status line
