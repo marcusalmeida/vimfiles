@@ -60,6 +60,22 @@
 " program output.
 " http://code.google.com/p/conque
 "
+" Ag-vim
+" This plugin is a front for ag, A.K.A. the_silver_searcher. Ag can be used as
+" a replacement for 153% of the uses of ack. This plugin will allow you to run
+" ag from vim, and shows the results in a split window.
+" https://github.com/rking/ag.vim
+"
+" EasyGrep
+" EasyGrep is a plugin for performing search and replace operations through
+" multiple files. 
+" http://vim.sourceforge.net/scripts/script.php?script_id=2438
+"
+" LustyExplorer
+" LustyExplorer is a fast and responsive way to manage files and buffers in
+" Vim.  It includes a filesystem explorer, a buffer switcher, and a buffer
+" grep for searching through and switching between files and buffers quickly,
+" all through a mostly common interface. 
 
 " ############ SETTINGS ###################
 " This must be first, because other otpions as a side effects.
@@ -150,7 +166,7 @@ set statusline+=%*]
 " displays tabs with :set list & displays when a line runs off-screen
 "set listchars=tab:>-,eol:$,trail:-,precedes:<,extends:>
 "set list
-
+set hidden
 """ Searching and Patterns
 set ignorecase              " Default to using case insensitive searches,
 set smartcase               " unless uppercase letters are used in the regex.
@@ -175,8 +191,8 @@ set ttymouse=xterm2
 set title
 
 " Replace the default rep programa with ack
-let g:ackprg="ack-grep -H --column"
-set grepprg=ack-grep
+let g:ackprg="ag --column --color-match --line-numbers"
+set grepprg=ag
 set grepformat=%f:%l:%c:%m
 
 " Auto change the directory to the current file I'm working on
@@ -204,9 +220,9 @@ set matchtime=2             " (for only .2 seconds).
 set nowrap                  " don't wrap text
 set linebreak               " don't wrap textin the middle of a word
 set autoindent              " always set autoindenting on
-set tabstop=4               " <tab> inserts 4 spaces
-set shiftwidth=4            " but an indent level is 2 spaces wide.
-set softtabstop=4           " <BS> over an autoindent deletes both spaces.
+set tabstop=2               " <tab> inserts 4 spaces
+set shiftwidth=2            " but an indent level is 2 spaces wide.
+set softtabstop=2           " <BS> over an autoindent deletes both spaces.
 set expandtab               " Use spaces, not tabs, for autoindent/tab key.
 set shiftround              " rounds indent to a multiple of shiftwidthd
 set matchpairs+=<:>         " show matching <> (html mainly) as well$
@@ -265,7 +281,7 @@ nmap <silent><Leader>tv <Esc>:Pytest verbose<CR>
 map <leader>dt :set makeprg=python\ manage.py\ test\|:call MakeGreen()<CR>
 
 " Run pep8
-let g:pep8_map='<leader>8'
+"let g:pep8_map='<leader>8'
 
 " ,v  brings up my .vimrc
 " ,V reload the .vimrc -- makign all change active (have to save first)
@@ -329,8 +345,8 @@ map <A-k> :cprevious<CR>
 " Key to remove duplicated lines.
 map ,d <esc>:%s/\(^\n\{2,}\)/\r/g<CR>
 
-" Ack searching
-nmap <leader>a <ESC>:Ack!
+" Ag searching
+nmap <leader>a <ESC>:Ag!
 " Load the Gundo window
 map <leader>g :GundoToggle<CR>
 
@@ -342,7 +358,7 @@ map <leader>r :RopeRename
 
 " Run bash shell
 map <leader>sh :ConqueTermSplit bash<CR>
-map <leader>ip :ConqueTermSplit ipython<CR>
+"map <leader>ip :ConqueTermSplit ipython<CR>
 
 " Mapping to move lines
 nnoremap <C-j> :m+<CR>==
@@ -563,6 +579,7 @@ autocmd vimenter * call s:SetupSnippets()
 function s:SetupSnippets()
     try
         call ExtractSnips("~/.vim/bundle/snipmate/snippets/html", "htmldjango")
+        call ExtractSnips("~/.vim/bundle/snipmate/snippets/html", "eruby")
     endtry
 endfunction
 
