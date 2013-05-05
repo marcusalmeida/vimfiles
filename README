@@ -60,6 +60,23 @@ Files from my .vim folder.
   program output.
   http://code.google.com/p/conque
 
+ --> Ag-vim
+    This plugin is a front for ag, A.K.A. the_silver_searcher. Ag can be used as
+  a replacement for 153% of the uses of ack. This plugin will allow you to run
+  ag from vim, and shows the results in a split window.
+  https://github.com/rking/ag.vim
+
+  --> EasyGrep
+  EasyGrep is a plugin for performing search and replace operations through
+  multiple files. 
+  http://vim.sourceforge.net/scripts/script.php?script_id=2438
+
+  --> LustyExplorer
+  LustyExplorer is a fast and responsive way to manage files and buffers in
+  Vim.  It includes a filesystem explorer, a buffer switcher, and a buffer
+  grep for searching through and switching between files and buffers quickly,
+  all through a mostly common interface. 
+
 
 ##### Mapping Keys #####
 
@@ -77,6 +94,8 @@ Files from my .vim folder.
 ,fb      = Fuzzy Buffer
 ,ff      = Fuzzy File buffer
 ,fd      = Fuzzy Dir buffer
+,lf      = Open LustyExplorer
+,lb      = Open LustyExplorerBuffer
 ,n       = Open NERDTree
 ,nc      = Close NERDTree
 ,d       = Remove duplicated lines
