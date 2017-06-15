@@ -2,9 +2,7 @@
 " Dependencies - Libraries/Applications outside of vim
 " ==========================================================
 " Pep8 - http://pypi.python.org/pypi/pep8
-" Pyflakes
 " Ack
-" Rake & Ruby for command-t
 " nose, django-nose
 " pylint
 
@@ -19,9 +17,6 @@
 "
 " Pytest
 "     Runs your Python tests in Vim.
-"
-" Commant-T
-"     Allows easy search and opening of files within a given path-
 "
 " Snipmate
 "     Configurable snippets to avoid re-typing common comands
@@ -150,7 +145,6 @@ set laststatus=2            " Always show statusline, even if only 1 window.
 set statusline=%F%m%r%h%w
 set statusline+=\ %{fugitive#statusline()}
 set statusline+=\ [FORMAT=%{&ff}]
-set statusline+=\ %{VirtualEnvStatusline()}
 set statusline+=\ [TYPE=%Y]
 set statusline+=\ [ENCODING=\%{&fenc}]
 set statusline+=\ [ASCII=\%03.3b]
@@ -184,7 +178,7 @@ set number
 set numberwidth=1
 
 " Enable mouse support, unless in insert mode
-set mouse=a
+set mouse=v
 set ttymouse=xterm2
 
 " Show title on console title bar
@@ -220,9 +214,9 @@ set matchtime=2             " (for only .2 seconds).
 set nowrap                  " don't wrap text
 set linebreak               " don't wrap textin the middle of a word
 set autoindent              " always set autoindenting on
-set tabstop=2               " <tab> inserts 4 spaces
+set tabstop=4               " <tab> inserts 4 spaces
 set shiftwidth=2            " but an indent level is 2 spaces wide.
-set softtabstop=2           " <BS> over an autoindent deletes both spaces.
+set softtabstop=4           " <BS> over an autoindent deletes both spaces.
 set expandtab               " Use spaces, not tabs, for autoindent/tab key.
 set shiftround              " rounds indent to a multiple of shiftwidthd
 set matchpairs+=<:>         " show matching <> (html mainly) as well$
@@ -350,15 +344,9 @@ nmap <leader>a <ESC>:Ag!
 " Load the Gundo window
 map <leader>g :GundoToggle<CR>
 
-" Jump to definition of whatever the cursor is on
-map <leader>j :RopeGotoDefinition<CR>
-
-" Rename whatever the cursor is on (including refences to it)
-map <leader>r :RopeRename
-
 " Run bash shell
 map <leader>sh :ConqueTermSplit bash<CR>
-"map <leader>ip :ConqueTermSplit ipython<CR>
+map <leader>ip :ConqueTermSplit ipython<CR>
 
 " Mapping to move lines
 nnoremap <C-j> :m+<CR>==
@@ -550,9 +538,6 @@ autocmd BufRead *py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\
 " Setting pylint
 autocmd FileType python compiler pylint
 
-" Don't let pyflakes use the quickfix window
-let g:pyflakes_use_quickfix = 0
-
 " turn of hlsearch and update pyflakes on enter
 autocmd BufRead,BufNewFile *.py nnoremap <buffer><CR> :nohlsearch\|:call PressedEnter()<cr>
 nnoremap <buffer><CR> :nohlsearch\|:call PressedEnter()<cr>
@@ -560,12 +545,10 @@ nnoremap <buffer><CR> :nohlsearch\|:call PressedEnter()<cr>
 " Clear the search buffer when hitting return and update pyflake checks
 function! PressedEnter()
     :nohlsearch
-    if &filetype == 'python'
-        :PyflakesUpdate
-    end
 endfunction
 
 if has("autocmd")
+    autocmd FileType python autocmd BufWritePre <buffer> :call Autopep8()
     autocmd FileType c,python,java,javascript,html,css autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
     autocmd FileType html,css autocmd BufWritePre <buffer> :call <SID>DeleteBlankLines()
     autocmd BufReadPost fugitive://* set bufhidden=delete
@@ -575,13 +558,13 @@ endif
 try
   source ~/.vim/bundle/snipmate/snippets/support_functions.vim
 endtry
-autocmd vimenter * call s:SetupSnippets()
 function s:SetupSnippets()
     try
         call ExtractSnips("~/.vim/bundle/snipmate/snippets/html", "htmldjango")
         call ExtractSnips("~/.vim/bundle/snipmate/snippets/html", "eruby")
     endtry
 endfunction
+autocmd vimenter * call s:SetupSnippets()
 
 " ==========================================================
 " SuperTab - Allows us to get code completion with tab
@@ -595,16 +578,32 @@ let g:SuperTabDefaultCompletionType = "context"
 filetype plugin on
 filetype indent on
 
+" ctrlp
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_custom_ignore = {
+      \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+      \ 'file': '\v\.(exe|so|dll)$',
+      \ 'link': 'some_bad_symbolic_links',
+      \ }
+
+" Autopep8
+" Disable show diff window
+let g:autopep8_disable_show_diff=1
+let g:autopep8_max_line_length=79
+
 " Fuzzy Finder Settings
 let g:fuzzy_matching_limit = 20
 let g:fuzzy_ignore="*.ico;*.png;*PNG;*.jpg;*.JPG;*.GIF;*.gif;tmp/**;log/**"
+
 " disable caching for Fuzzy Finder
 let g:fuf_tag_cache_dir = ''
 let g:fuf_taggedfile_cache_dir = ''
 
 " NERDTree ignore files
 let NERDTreeIgnore = ['\.pyc$','\.obj$', '\.o$']
-
 
 " Settings for Conque Shell plugin
 " http://code.google.com/p/conque
