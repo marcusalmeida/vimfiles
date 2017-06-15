@@ -21,8 +21,6 @@
 " Snipmate
 "     Configurable snippets to avoid re-typing common comands
 "
-" PyFlakes
-"     Underlines and displays errors with Python on-the-fly
 "
 " Fugitive
 "    Interface with git from vim
@@ -141,21 +139,6 @@ set report=0                " : commands always print changed line count
 set shortmess+=a            " Use [+]/[RO]/[w] for modified/readonly/written
 set ruler                   " Show some info, even without statuslines.
 set laststatus=2            " Always show statusline, even if only 1 window.
-" Setting status line
-set statusline=%F%m%r%h%w
-set statusline+=\ %{fugitive#statusline()}
-set statusline+=\ [FORMAT=%{&ff}]
-set statusline+=\ [TYPE=%Y]
-set statusline+=\ [ENCODING=\%{&fenc}]
-set statusline+=\ [ASCII=\%03.3b]
-set statusline+=\ [%p%%]
-set statusline+=\ [%l,%L]
-set statusline+=\ [COL=\%c]
-set statusline+=\ [*ERROR=%#error#
-set statusline+=%{StatuslineTabWarning()}
-set statusline+=%{StatuslineTrailingSpaceWarning()}
-set statusline+=%{StatuslineLongLineWarning()}
-set statusline+=%*]
 
 " displays tabs with :set list & displays when a line runs off-screen
 "set listchars=tab:>-,eol:$,trail:-,precedes:<,extends:>
@@ -307,15 +290,6 @@ map <C-n> :browse confirm e<cr>
 " Open save-as dialog (ctrl-shift-n)
 map <C-S-s> :browse confirm saveas<cr>
 
-" FufBuffer
-map <leader>fb :FufBuffer<cr>
-
-" FufFile
-map <leader>ff :FufFile<cr>
-
-" FufDir
-map <leader>fd :FufDir<cr>
-
 " NERDTree Close
 map <leader>n :NERDTree<cr>
 
@@ -341,6 +315,7 @@ map ,d <esc>:%s/\(^\n\{2,}\)/\r/g<CR>
 
 " Ag searching
 nmap <leader>a <ESC>:Ag!
+
 " Load the Gundo window
 map <leader>g :GundoToggle<CR>
 
@@ -367,109 +342,15 @@ vnoremap <C-k> :m-2<CR>gv=gv
 "nmap <S-Tab> gT
 
 " ############ FUNCTIONS ###################
+
 " reacalculate the traling whitespace warning when idle, and after saving
 autocmd cursorhold,bufwritepost * unlet! b:statusline_trailing_space_warning
-
-" Return '[\s]' if trailing white space is detected
-" Return '' otherwise
-function! StatuslineTrailingSpaceWarning()
-    if !exists("b:statusline_trailing_space_warning")
-        if search('\s\+$','nw') != 0
-            let b:statusline_trailing_space_warning = '[\s]'
-        else
-            let b:statusline_trailing_space_warning = ''
-        endif
-    endif
-    return b:statusline_trailing_space_warning
-endfunction
-
-" Return the syntax highlight group under the cursor ''
-function! StatuslineCurrentHighlight()
-    let name = synIDattr(synID(line('.'),col('.'),1),'name')
-    if name == ''
-        return ''
-    else
-        return '[' . name . ']'
-    endif
-endfunction
 
 " Recalculate the tab warning flag when idle and after writing
 autocmd cursorhold,bufwritepost * unlet! b:statusline_tab_warning
 
-" Return '[&et]' if &et is set wrong
-" Return '[mixed-indenting]' if space and tab are used to indent
-" Return an empty string if everthing is fin
-function! StatuslineTabWarning()
-    if !exists("b:statusline_tab_warning")
-        let tabs = search('^\t', 'nw') != 0
-        let spaces = search('^ ', 'nw') != 0
-
-        if tabs && spaces
-            let b:statusline_tab_warning = '[mixed-indenting]'
-        elseif (spaces && !&et) || (tabs && &et)
-            let b:statusline_tab_warning = '[&et]'
-        else
-            let b:statusline_tab_warning = ''
-        endif
-    endif
-    return b:statusline_tab_warning
-endfunction
-
 " Recalculate the long line warning whe idle and after saving
 autocmd cursorhold,bufwritepost * unlet! b:statusline_long_line_warning
-
-" Return a warinig for "long lines" where "long" is either &textwidth or 80
-" (if no &textwidth is set)
-" Return '' if no long lines
-" Return '[#x,my,$z] if long lines ar found, ware x is the number of long
-" lines, y is median length of the long lines and z is the length of the
-" longest line.
-function! StatuslineLongLineWarning()
-    if !exists("b:statusline_long_line_warning")
-        let long_line_lens = s:LongLines()
-
-        if len(long_line_lens) > 0
-            let b:statusline_long_line_warning = "[" .
-                        \ '#' . len(long_line_lens) . "," .
-                        \ 'm' . s:Median(long_line_lens) . "," .
-                        \ '$' . max(long_line_lens) . ']'
-        else
-            let b:statusline_long_line_warning = ""
-        endif
-    endif
-endfunction
-
-" Return a list containing the lengths of the long lines in this buffer
-function! s:LongLines()
-    let threshold = (&tw ? &tw : 100)
-    let spaces = repeat(" ", &ts)
-
-    let long_line_lens = []
-
-    let i = 1
-    while i <= line("$")
-        let len = strlen(substitute(getline(i) ,'\t', spaces, 'g'))
-        if len > threshold
-            call add(long_line_lens, len)
-        endif
-        let i += 1
-    endwhile
-    return long_line_lens
-endfunction
-
-" Find the median of the given array of numbers
-function! s:Median(nums)
-    let nums = sort(a:nums)
-    let l = len(nums)
-
-    " Binary search
-    if l % 2 == 1
-        let i = (l-1) / 2
-        return nums[i]
-    else
-        return (nums[l/2] + nums[(l/2) - 1]) / 2
-    endif
-endfunction
 
 " Define :HighlightLongLines comman to ghighlight the offending parts of
 " lines that are longer than the specified lgnth (defaulting to 100)
