@@ -144,6 +144,7 @@ set laststatus=2            " Always show statusline, even if only 1 window.
 "set listchars=tab:>-,eol:$,trail:-,precedes:<,extends:>
 "set list
 set hidden
+
 """ Searching and Patterns
 set ignorecase              " Default to using case insensitive searches,
 set smartcase               " unless uppercase letters are used in the regex.
@@ -291,10 +292,14 @@ map <C-n> :browse confirm e<cr>
 map <C-S-s> :browse confirm saveas<cr>
 
 " NERDTree Close
-map <leader>n :NERDTree<cr>
+map <leader>nn :NERDTree<cr>
 
 " NERDTree Open
 map <leader>nc :NERDTreeClose<cr>
+
+" To open a new empty buffer
+" This replaces :tabnew which I used to bind to this mapping
+nmap <leader>T :enew<cr>
 
 " Buffer cycling
 map <C-right> <ESC>:bn<cr>
@@ -338,8 +343,14 @@ vnoremap <C-k> :m-2<CR>gv=gv
 "map <C-l> <C-w>l
 
 "key mapping for tab navigation
-"nmap <Tab> gt
-"nmap <S-Tab> gT
+" CTRL-Tab is next tab
+noremap <C-Tab> :<C-U>tabnext<CR>
+inoremap <C-Tab> <C-\><C-N>:tabnext<CR>
+cnoremap <C-Tab> <C-C>:tabnext<CR>
+" CTRL-SHIFT-Tab is previous tab
+noremap <C-S-Tab> :<C-U>tabprevious<CR>
+inoremap <C-S-Tab> <C-\><C-N>:tabprevious<CR>
+cnoremap <C-S-Tab> <C-C>:tabprevious<CR>
 
 " ############ FUNCTIONS ###################
 
@@ -469,6 +480,12 @@ let g:ctrlp_custom_ignore = {
       \ 'file': '\v\.(exe|so|dll)$',
       \ 'link': 'some_bad_symbolic_links',
       \ }
+
+" Ariline
+" Enable the list of buffers
+let g:airline#extensions#tabline#enabled = 1
+" Show just the filename
+let g:airline#extensions#tabline#fnamemod = ':t'
 
 " Autopep8
 " Disable show diff window
