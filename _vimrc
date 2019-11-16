@@ -2,9 +2,7 @@
 " Dependencies - Libraries/Applications outside of vim
 " ==========================================================
 " Pep8 - http://pypi.python.org/pypi/pep8
-" Pyflakes
 " Ack
-" Rake & Ruby for command-t
 " nose, django-nose
 " pylint
 
@@ -20,14 +18,9 @@
 " Pytest
 "     Runs your Python tests in Vim.
 "
-" Commant-T
-"     Allows easy search and opening of files within a given path-
-"
 " Snipmate
 "     Configurable snippets to avoid re-typing common comands
 "
-" PyFlakes
-"     Underlines and displays errors with Python on-the-fly
 "
 " Fugitive
 "    Interface with git from vim
@@ -71,12 +64,6 @@
 " multiple files. 
 " http://vim.sourceforge.net/scripts/script.php?script_id=2438
 "
-" LustyExplorer
-" LustyExplorer is a fast and responsive way to manage files and buffers in
-" Vim.  It includes a filesystem explorer, a buffer switcher, and a buffer
-" grep for searching through and switching between files and buffers quickly,
-" all through a mostly common interface. 
-
 " ############ SETTINGS ###################
 " This must be first, because other otpions as a side effects.
 set nocompatible      " Don't be compatible with vi
@@ -135,7 +122,7 @@ set wildmenu
 set wildignore+=*.o,*.obj,.git,*.pyc
 
 " Setting colorscheme
-colorscheme transparent
+colorscheme monokai
 
 """" Messages, Info, Status
 set ls=2                    " allways show status line
@@ -146,27 +133,12 @@ set report=0                " : commands always print changed line count
 set shortmess+=a            " Use [+]/[RO]/[w] for modified/readonly/written
 set ruler                   " Show some info, even without statuslines.
 set laststatus=2            " Always show statusline, even if only 1 window.
-" Setting status line
-set statusline=%F%m%r%h%w
-set statusline+=\ %{fugitive#statusline()}
-set statusline+=\ [FORMAT=%{&ff}]
-set statusline+=\ %{VirtualEnvStatusline()}
-set statusline+=\ [TYPE=%Y]
-set statusline+=\ [ENCODING=\%{&fenc}]
-set statusline+=\ [ASCII=\%03.3b]
-set statusline+=\ [%p%%]
-set statusline+=\ [%l,%L]
-set statusline+=\ [COL=\%c]
-set statusline+=\ [*ERROR=%#error#
-set statusline+=%{StatuslineTabWarning()}
-set statusline+=%{StatuslineTrailingSpaceWarning()}
-set statusline+=%{StatuslineLongLineWarning()}
-set statusline+=%*]
 
 " displays tabs with :set list & displays when a line runs off-screen
 "set listchars=tab:>-,eol:$,trail:-,precedes:<,extends:>
 "set list
 set hidden
+
 """ Searching and Patterns
 set ignorecase              " Default to using case insensitive searches,
 set smartcase               " unless uppercase letters are used in the regex.
@@ -184,7 +156,7 @@ set number
 set numberwidth=1
 
 " Enable mouse support, unless in insert mode
-set mouse=a
+set mouse=v
 set ttymouse=xterm2
 
 " Show title on console title bar
@@ -220,9 +192,9 @@ set matchtime=2             " (for only .2 seconds).
 set nowrap                  " don't wrap text
 set linebreak               " don't wrap textin the middle of a word
 set autoindent              " always set autoindenting on
-set tabstop=2               " <tab> inserts 4 spaces
+set tabstop=4               " <tab> inserts 4 spaces
 set shiftwidth=2            " but an indent level is 2 spaces wide.
-set softtabstop=2           " <BS> over an autoindent deletes both spaces.
+set softtabstop=4           " <BS> over an autoindent deletes both spaces.
 set expandtab               " Use spaces, not tabs, for autoindent/tab key.
 set shiftround              " rounds indent to a multiple of shiftwidthd
 set matchpairs+=<:>         " show matching <> (html mainly) as well$
@@ -313,20 +285,18 @@ map <C-n> :browse confirm e<cr>
 " Open save-as dialog (ctrl-shift-n)
 map <C-S-s> :browse confirm saveas<cr>
 
-" FufBuffer
-map <leader>fb :FufBuffer<cr>
-
-" FufFile
-map <leader>ff :FufFile<cr>
-
-" FufDir
-map <leader>fd :FufDir<cr>
+" NERDTree Toggle
+map <F2> :NERDTreeToggle<cr>
 
 " NERDTree Close
-map <leader>n :NERDTree<cr>
+"map <leader>nn :NERDTree<cr>
 
 " NERDTree Open
-map <leader>nc :NERDTreeClose<cr>
+"map <leader>nc :NERDTreeClose<cr>
+
+" To open a new empty buffer
+" This replaces :tabnew which I used to bind to this mapping
+nmap <leader>T :enew<cr>
 
 " Buffer cycling
 map <C-right> <ESC>:bn<cr>
@@ -347,18 +317,13 @@ map ,d <esc>:%s/\(^\n\{2,}\)/\r/g<CR>
 
 " Ag searching
 nmap <leader>a <ESC>:Ag!
+
 " Load the Gundo window
 map <leader>g :GundoToggle<CR>
 
-" Jump to definition of whatever the cursor is on
-map <leader>j :RopeGotoDefinition<CR>
-
-" Rename whatever the cursor is on (including refences to it)
-map <leader>r :RopeRename
-
 " Run bash shell
 map <leader>sh :ConqueTermSplit bash<CR>
-"map <leader>ip :ConqueTermSplit ipython<CR>
+map <leader>ip :ConqueTermSplit ipython<CR>
 
 " Mapping to move lines
 nnoremap <C-j> :m+<CR>==
@@ -375,115 +340,152 @@ vnoremap <C-k> :m-2<CR>gv=gv
 "map <C-l> <C-w>l
 
 "key mapping for tab navigation
-"nmap <Tab> gt
-"nmap <S-Tab> gT
+" CTRL-Tab is next tab
+noremap <C-Tab> :<C-U>tabnext<CR>
+inoremap <C-Tab> <C-\><C-N>:tabnext<CR>
+cnoremap <C-Tab> <C-C>:tabnext<CR>
+" CTRL-SHIFT-Tab is previous tab
+noremap <C-S-Tab> :<C-U>tabprevious<CR>
+inoremap <C-S-Tab> <C-\><C-N>:tabprevious<CR>
+cnoremap <C-S-Tab> <C-C>:tabprevious<CR>
+
+" ############ Configs for GO  #########
+autocmd FileType go set noexpandtab
+autocmd FileType go set shiftwidth=4
+autocmd FileType go set softtabstop=4
+autocmd FileType go set tabstop=4
+" ####### GO code highlight
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_types = 1
+let g:go_auto_sameids = 1
+
+" Auto import dependencies
+let g:go_fmt_command = "goimports"
+
+" Linting code
+" Error and warning signs.
+let g:ale_sign_error = '⤫'
+let g:ale_sign_warning = '⚠'
+" Enable integration with airline.
+let g:airline#extensions#ale#enabled = 1
+
+"----------------------------------------------
+" Language: Golang
+"----------------------------------------------
+au FileType go set noexpandtab
+au FileType go set shiftwidth=4
+au FileType go set softtabstop=4
+au FileType go set tabstop=4
+
+" Mappings
+au FileType go nmap <F8> :GoMetaLinter<cr>
+au FileType go nmap <F9> :GoCoverageToggle -short<cr>
+au FileType go nmap <F10> :GoTest -short<cr>
+au FileType go nmap <F12> <Plug>(go-def)
+au Filetype go nmap <leader>ga <Plug>(go-alternate-edit)
+au Filetype go nmap <leader>gah <Plug>(go-alternate-split)
+au Filetype go nmap <leader>gav <Plug>(go-alternate-vertical)
+au FileType go nmap <leader>gt :GoDeclsDir<cr>
+au FileType go nmap <leader>gc <Plug>(go-coverage-toggle)
+au FileType go nmap <leader>gd <Plug>(go-def)
+au FileType go nmap <leader>gdv <Plug>(go-def-vertical)
+au FileType go nmap <leader>gdh <Plug>(go-def-split)
+au FileType go nmap <leader>gD <Plug>(go-doc)
+au FileType go nmap <leader>gDv <Plug>(go-doc-vertical)
+
+" Run goimports when running gofmt
+let g:go_fmt_command = "goimports"
+
+" Set neosnippet as snippet engine
+let g:go_snippet_engine = "neosnippet"
+
+" Enable syntax highlighting per default
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_extra_types = 1
+
+" Show the progress when running :GoCoverage
+let g:go_echo_command_info = 1
+
+" Show type information
+let g:go_auto_type_info = 1
+
+" Highlight variable uses
+let g:go_auto_sameids = 1
+
+" Fix for location list when vim-go is used together with Syntastic
+let g:go_list_type = "quickfix"
+
+" Add the failing test name to the output of :GoTest
+let g:go_test_show_name = 1
+
+" gometalinter configuration
+let g:go_metalinter_command = ""
+let g:go_metalinter_deadline = "5s"
+let g:go_metalinter_enabled = [
+    \ 'deadcode',
+    \ 'gas',
+    \ 'goconst',
+    \ 'gocyclo',
+    \ 'golint',
+    \ 'gosimple',
+    \ 'ineffassign',
+    \ 'vet',
+    \ 'vetshadow'
+\]
+
+" Set whether the JSON tags should be snakecase or camelcase.
+let g:go_addtags_transform = "snakecase"
+
+" neomake configuration for Go.
+let g:neomake_go_enabled_makers = [ 'go', 'gometalinter' ]
+let g:neomake_go_gometalinter_maker = {
+  \ 'args': [
+  \   '--tests',
+  \   '--enable-gc',
+  \   '--concurrency=3',
+  \   '--fast',
+  \   '-D', 'aligncheck',
+  \   '-D', 'dupl',
+  \   '-D', 'gocyclo',
+  \   '-D', 'gotype',
+  \   '-E', 'misspell',
+  \   '-E', 'unused',
+  \   '%:p:h',
+  \ ],
+  \ 'append_file': 0,
+  \ 'errorformat':
+  \   '%E%f:%l:%c:%trror: %m,' .
+  \   '%W%f:%l:%c:%tarning: %m,' .
+  \   '%E%f:%l::%trror: %m,' .
+  \   '%W%f:%l::%tarning: %m'
+  \ }
+
+
 
 " ############ FUNCTIONS ###################
+
 " reacalculate the traling whitespace warning when idle, and after saving
 autocmd cursorhold,bufwritepost * unlet! b:statusline_trailing_space_warning
-
-" Return '[\s]' if trailing white space is detected
-" Return '' otherwise
-function! StatuslineTrailingSpaceWarning()
-    if !exists("b:statusline_trailing_space_warning")
-        if search('\s\+$','nw') != 0
-            let b:statusline_trailing_space_warning = '[\s]'
-        else
-            let b:statusline_trailing_space_warning = ''
-        endif
-    endif
-    return b:statusline_trailing_space_warning
-endfunction
-
-" Return the syntax highlight group under the cursor ''
-function! StatuslineCurrentHighlight()
-    let name = synIDattr(synID(line('.'),col('.'),1),'name')
-    if name == ''
-        return ''
-    else
-        return '[' . name . ']'
-    endif
-endfunction
 
 " Recalculate the tab warning flag when idle and after writing
 autocmd cursorhold,bufwritepost * unlet! b:statusline_tab_warning
 
-" Return '[&et]' if &et is set wrong
-" Return '[mixed-indenting]' if space and tab are used to indent
-" Return an empty string if everthing is fin
-function! StatuslineTabWarning()
-    if !exists("b:statusline_tab_warning")
-        let tabs = search('^\t', 'nw') != 0
-        let spaces = search('^ ', 'nw') != 0
-
-        if tabs && spaces
-            let b:statusline_tab_warning = '[mixed-indenting]'
-        elseif (spaces && !&et) || (tabs && &et)
-            let b:statusline_tab_warning = '[&et]'
-        else
-            let b:statusline_tab_warning = ''
-        endif
-    endif
-    return b:statusline_tab_warning
-endfunction
-
 " Recalculate the long line warning whe idle and after saving
 autocmd cursorhold,bufwritepost * unlet! b:statusline_long_line_warning
 
-" Return a warinig for "long lines" where "long" is either &textwidth or 80
-" (if no &textwidth is set)
-" Return '' if no long lines
-" Return '[#x,my,$z] if long lines ar found, ware x is the number of long
-" lines, y is median length of the long lines and z is the length of the
-" longest line.
-function! StatuslineLongLineWarning()
-    if !exists("b:statusline_long_line_warning")
-        let long_line_lens = s:LongLines()
-
-        if len(long_line_lens) > 0
-            let b:statusline_long_line_warning = "[" .
-                        \ '#' . len(long_line_lens) . "," .
-                        \ 'm' . s:Median(long_line_lens) . "," .
-                        \ '$' . max(long_line_lens) . ']'
-        else
-            let b:statusline_long_line_warning = ""
-        endif
-    endif
-endfunction
-
-" Return a list containing the lengths of the long lines in this buffer
-function! s:LongLines()
-    let threshold = (&tw ? &tw : 100)
-    let spaces = repeat(" ", &ts)
-
-    let long_line_lens = []
-
-    let i = 1
-    while i <= line("$")
-        let len = strlen(substitute(getline(i) ,'\t', spaces, 'g'))
-        if len > threshold
-            call add(long_line_lens, len)
-        endif
-        let i += 1
-    endwhile
-    return long_line_lens
-endfunction
-
-" Find the median of the given array of numbers
-function! s:Median(nums)
-    let nums = sort(a:nums)
-    let l = len(nums)
-
-    " Binary search
-    if l % 2 == 1
-        let i = (l-1) / 2
-        return nums[i]
-    else
-        return (nums[l/2] + nums[(l/2) - 1]) / 2
-    endif
-endfunction
-
-" Define :HighlightLongLines comman to ghighlight the offending parts of
+" Define :HighlightLongLines comman to highlight the offending parts of
 " lines that are longer than the specified lgnth (defaulting to 100)
 command! -nargs=? HighlihgtLongLines call s:HighlightLongLines('<args>')
 function! s:HighlightLongLines(width)
@@ -550,9 +552,6 @@ autocmd BufRead *py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\
 " Setting pylint
 autocmd FileType python compiler pylint
 
-" Don't let pyflakes use the quickfix window
-let g:pyflakes_use_quickfix = 0
-
 " turn of hlsearch and update pyflakes on enter
 autocmd BufRead,BufNewFile *.py nnoremap <buffer><CR> :nohlsearch\|:call PressedEnter()<cr>
 nnoremap <buffer><CR> :nohlsearch\|:call PressedEnter()<cr>
@@ -560,12 +559,10 @@ nnoremap <buffer><CR> :nohlsearch\|:call PressedEnter()<cr>
 " Clear the search buffer when hitting return and update pyflake checks
 function! PressedEnter()
     :nohlsearch
-    if &filetype == 'python'
-        :PyflakesUpdate
-    end
 endfunction
 
 if has("autocmd")
+    autocmd FileType python autocmd BufWritePre <buffer> :call Autopep8()
     autocmd FileType c,python,java,javascript,html,css autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
     autocmd FileType html,css autocmd BufWritePre <buffer> :call <SID>DeleteBlankLines()
     autocmd BufReadPost fugitive://* set bufhidden=delete
@@ -575,13 +572,13 @@ endif
 try
   source ~/.vim/bundle/snipmate/snippets/support_functions.vim
 endtry
-autocmd vimenter * call s:SetupSnippets()
 function s:SetupSnippets()
     try
         call ExtractSnips("~/.vim/bundle/snipmate/snippets/html", "htmldjango")
         call ExtractSnips("~/.vim/bundle/snipmate/snippets/html", "eruby")
     endtry
 endfunction
+autocmd vimenter * call s:SetupSnippets()
 
 " ==========================================================
 " SuperTab - Allows us to get code completion with tab
@@ -594,10 +591,62 @@ let g:SuperTabDefaultCompletionType = "context"
 " load ftpplugins and indent files
 filetype plugin on
 filetype indent on
+set omnifunc=syntaxcomplete#Complete
+
+
+"----------------------------------------------
+" Plugin: 'ctrlpvim/ctrlp.vim'
+"----------------------------------------------
+" Note: We are not using CtrlP much in this configuration. But vim-go depend on
+" it to run GoDecls(Dir).
+
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_custom_ignore = {
+      \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+      \ 'file': '\v\.(exe|so|dll)$',
+      \ 'link': 'some_bad_symbolic_links',
+      \ }
+
+
+
+" Ariline
+" "----------------------------------------------
+" Plugin: bling/vim-airline
+"----------------------------------------------
+" Show status bar by default.
+set laststatus=2
+
+" Enable top tabline.
+let g:airline#extensions#tabline#enabled = 1
+
+" Disable showing tabs in the tabline. This will ensure that the buffers are
+" what is shown in the tabline at all times.
+let g:airline#extensions#tabline#show_tabs = 0
+
+" Enable powerline fonts.
+let g:airline_powerline_fonts = 0
+
+" Explicitly define some symbols that did not work well for me in Linux.
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+let g:airline_symbols.branch = ''
+let g:airline_symbols.maxlinenr = ''
+
+let g:airline#extensions#tabline#fnamemod = ':t'
+
+" Autopep8
+" Disable show diff window
+let g:autopep8_disable_show_diff=1
+let g:autopep8_max_line_length=79
 
 " Fuzzy Finder Settings
 let g:fuzzy_matching_limit = 20
 let g:fuzzy_ignore="*.ico;*.png;*PNG;*.jpg;*.JPG;*.GIF;*.gif;tmp/**;log/**"
+
 " disable caching for Fuzzy Finder
 let g:fuf_tag_cache_dir = ''
 let g:fuf_taggedfile_cache_dir = ''
@@ -605,6 +654,8 @@ let g:fuf_taggedfile_cache_dir = ''
 " NERDTree ignore files
 let NERDTreeIgnore = ['\.pyc$','\.obj$', '\.o$']
 
+
+let g:golang_goroot = "/home/marcus/go"
 
 " Settings for Conque Shell plugin
 " http://code.google.com/p/conque
@@ -625,6 +676,10 @@ let g:ConqueTerm_StartMessages = 0
 
 "" Close buffer when program exits
 let g:ConqueTerm_CloseOnEnd = 1
+
+"" Setting background transparent
+highlight Normal ctermbg=none
+highlight NonText ctermbg=none
 
 " Start NERDTree when in gui_gnome  MODE
 if has("gui_running")
