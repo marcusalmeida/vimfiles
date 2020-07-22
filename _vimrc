@@ -64,12 +64,6 @@
 " multiple files. 
 " http://vim.sourceforge.net/scripts/script.php?script_id=2438
 "
-" LustyExplorer
-" LustyExplorer is a fast and responsive way to manage files and buffers in
-" Vim.  It includes a filesystem explorer, a buffer switcher, and a buffer
-" grep for searching through and switching between files and buffers quickly,
-" all through a mostly common interface. 
-
 " ############ SETTINGS ###################
 " This must be first, because other otpions as a side effects.
 set nocompatible      " Don't be compatible with vi
@@ -128,7 +122,7 @@ set wildmenu
 set wildignore+=*.o,*.obj,.git,*.pyc
 
 " Setting colorscheme
-colorscheme transparent
+colorscheme monokai
 
 """" Messages, Info, Status
 set ls=2                    " allways show status line
@@ -206,6 +200,7 @@ set shiftround              " rounds indent to a multiple of shiftwidthd
 set matchpairs+=<:>         " show matching <> (html mainly) as well$
 set foldmethod=indent       " allow us to fold on indents$
 set foldlevel=99            " don't fold by default$
+set autowrite
 
 " close preview window automatically when we move around
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
@@ -291,11 +286,14 @@ map <C-n> :browse confirm e<cr>
 " Open save-as dialog (ctrl-shift-n)
 map <C-S-s> :browse confirm saveas<cr>
 
+" NERDTree Toggle
+map <F2> :NERDTreeToggle<cr>
+
 " NERDTree Close
-map <leader>nn :NERDTree<cr>
+"map <leader>nn :NERDTree<cr>
 
 " NERDTree Open
-map <leader>nc :NERDTreeClose<cr>
+"map <leader>nc :NERDTreeClose<cr>
 
 " To open a new empty buffer
 " This replaces :tabnew which I used to bind to this mapping
@@ -352,6 +350,140 @@ noremap <C-S-Tab> :<C-U>tabprevious<CR>
 inoremap <C-S-Tab> <C-\><C-N>:tabprevious<CR>
 cnoremap <C-S-Tab> <C-C>:tabprevious<CR>
 
+" ############ Configs for GO  #########
+autocmd FileType go set noexpandtab
+autocmd FileType go set shiftwidth=4
+autocmd FileType go set softtabstop=4
+autocmd FileType go set tabstop=4
+autocmd FileType go nmap <leader>b <Plug>(go-build)
+autocmd FileType go nmap <leader>r <Plug>(go-run)
+autocmd FileType go nmap <leader>t <Plug>(go-test)
+" ####### GO code highlight
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_types = 1
+let g:go_auto_sameids = 1
+let g:go_test_timeout = '10s'
+
+" Auto import dependencies
+let g:go_fmt_command = "goimports"
+
+let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
+"let g:go_metalinter_autosave = 1
+"let g:go_metalinter_autosave_enabled = ['vet', 'golint']
+"let g:go_metalinter_deadline = "5s"
+
+" Linting code
+" Error and warning signs.
+let g:ale_sign_error = '⤫'
+let g:ale_sign_warning = '⚠'
+" Enable integration with airline.
+let g:airline#extensions#ale#enabled = 1
+
+"----------------------------------------------
+" Language: Golang
+"----------------------------------------------
+au FileType go set noexpandtab
+au FileType go set shiftwidth=4
+au FileType go set softtabstop=4
+au FileType go set tabstop=4
+
+" Mappings
+au FileType go nmap <F8> :GoMetaLinter<cr>
+au FileType go nmap <F9> :GoCoverageToggle -short<cr>
+au FileType go nmap <F10> :GoTest -short<cr>
+au FileType go nmap <F12> <Plug>(go-def)
+au Filetype go nmap <leader>ga <Plug>(go-alternate-edit)
+au Filetype go nmap <leader>gah <Plug>(go-alternate-split)
+au Filetype go nmap <leader>gav <Plug>(go-alternate-vertical)
+au FileType go nmap <leader>gt :GoDeclsDir<cr>
+au FileType go nmap <leader>gc <Plug>(go-coverage-toggle)
+au FileType go nmap <leader>gd <Plug>(go-def)
+au FileType go nmap <leader>gdv <Plug>(go-def-vertical)
+au FileType go nmap <leader>gdh <Plug>(go-def-split)
+au FileType go nmap <leader>gD <Plug>(go-doc)
+au FileType go nmap <leader>gDv <Plug>(go-doc-vertical)
+
+" Run goimports when running gofmt
+let g:go_fmt_command = "goimports"
+
+" Set neosnippet as snippet engine
+let g:go_snippet_engine = "neosnippet"
+
+" Enable syntax highlighting per default
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_extra_types = 1
+
+" Show the progress when running :GoCoverage
+let g:go_echo_command_info = 1
+
+" Show type information
+let g:go_auto_type_info = 1
+
+" Highlight variable uses
+let g:go_auto_sameids = 1
+
+" Fix for location list when vim-go is used together with Syntastic
+let g:go_list_type = "quickfix"
+
+" Add the failing test name to the output of :GoTest
+let g:go_test_show_name = 1
+
+" gometalinter configuration
+let g:go_metalinter_command = ""
+let g:go_metalinter_deadline = "5s"
+let g:go_metalinter_enabled = [
+    \ 'deadcode',
+    \ 'gas',
+    \ 'goconst',
+    \ 'gocyclo',
+    \ 'golint',
+    \ 'gosimple',
+    \ 'ineffassign',
+    \ 'vet',
+    \ 'vetshadow'
+\]
+
+" Set whether the JSON tags should be snakecase or camelcase.
+let g:go_addtags_transform = "snakecase"
+
+" neomake configuration for Go.
+let g:neomake_go_enabled_makers = [ 'go', 'gometalinter' ]
+let g:neomake_go_gometalinter_maker = {
+  \ 'args': [
+  \   '--tests',
+  \   '--enable-gc',
+  \   '--concurrency=3',
+  \   '--fast',
+  \   '-D', 'aligncheck',
+  \   '-D', 'dupl',
+  \   '-D', 'gocyclo',
+  \   '-D', 'gotype',
+  \   '-E', 'misspell',
+  \   '-E', 'unused',
+  \   '%:p:h',
+  \ ],
+  \ 'append_file': 0,
+  \ 'errorformat':
+  \   '%E%f:%l:%c:%trror: %m,' .
+  \   '%W%f:%l:%c:%tarning: %m,' .
+  \   '%E%f:%l::%trror: %m,' .
+  \   '%W%f:%l::%tarning: %m'
+  \ }
+
+
+
 " ############ FUNCTIONS ###################
 
 " reacalculate the traling whitespace warning when idle, and after saving
@@ -363,7 +495,7 @@ autocmd cursorhold,bufwritepost * unlet! b:statusline_tab_warning
 " Recalculate the long line warning whe idle and after saving
 autocmd cursorhold,bufwritepost * unlet! b:statusline_long_line_warning
 
-" Define :HighlightLongLines comman to ghighlight the offending parts of
+" Define :HighlightLongLines comman to highlight the offending parts of
 " lines that are longer than the specified lgnth (defaulting to 100)
 command! -nargs=? HighlihgtLongLines call s:HighlightLongLines('<args>')
 function! s:HighlightLongLines(width)
@@ -421,6 +553,27 @@ function! <SID>DeleteBlankLines()
 endfunction
 nmap <leader>0 :call <SID>DeleteBlankLines()<CR>
 
+" ==================================================================
+" Use RipGrep with Ctrlp
+" ==================================================================
+function! CtrlPCommand()
+  let c = 0
+  let wincount = winnr('$')
+  while !empty(getbufvar(+expand("<abuf>"), "&buftype")) && c < wincount
+    exec 'wincmd w'
+    let c = c + 1
+  endwhile
+  exec 'CtrlP'
+endfunction
+let g:ctrlp_cmd = 'call CtrlPCommand()'
+
+" RipGrep
+if executable('rg')
+  set grepprg=rg\ --color=never
+  let g:ctrlp_user_command='rg %s --files --color=never --glob ""'
+  let g:ctrlp_use_caching=0
+endif
+
 " ===================================================================
 " Python
 " ===================================================================
@@ -469,22 +622,49 @@ let g:SuperTabDefaultCompletionType = "context"
 " load ftpplugins and indent files
 filetype plugin on
 filetype indent on
+set omnifunc=syntaxcomplete#Complete
 
-" ctrlp
+
+"----------------------------------------------
+" Plugin: 'ctrlpvim/ctrlp.vim'
+"----------------------------------------------
+" Note: We are not using CtrlP much in this configuration. But vim-go depend on
+" it to run GoDecls(Dir).
+
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 let g:ctrlp_custom_ignore = {
       \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-      \ 'file': '\v\.(exe|so|dll)$',
+      \ 'file': '\v\.(exe|so|dll|dat|meta|zip|rar|apk)$',
       \ 'link': 'some_bad_symbolic_links',
       \ }
+"----------------------------------------------
 
 " Ariline
-" Enable the list of buffers
+" "----------------------------------------------
+" Plugin: bling/vim-airline
+"----------------------------------------------
+" Show status bar by default.
+set laststatus=2
+
+" Enable top tabline.
 let g:airline#extensions#tabline#enabled = 1
-" Show just the filename
+
+" Disable showing tabs in the tabline. This will ensure that the buffers are
+" what is shown in the tabline at all times.
+let g:airline#extensions#tabline#show_tabs = 0
+
+" Enable powerline fonts.
+let g:airline_powerline_fonts = 0
+
+" Explicitly define some symbols that did not work well for me in Linux.
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+let g:airline_symbols.branch = ''
+let g:airline_symbols.maxlinenr = ''
+
 let g:airline#extensions#tabline#fnamemod = ':t'
 
 " Autopep8
@@ -502,6 +682,20 @@ let g:fuf_taggedfile_cache_dir = ''
 
 " NERDTree ignore files
 let NERDTreeIgnore = ['\.pyc$','\.obj$', '\.o$']
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "✹",
+    \ "Staged"    : "✚",
+    \ "Untracked" : "✭",
+    \ "Renamed"   : "➜",
+    \ "Unmerged"  : "═",
+    \ "Deleted"   : "✖",
+    \ "Dirty"     : "✗",
+    \ "Clean"     : "✔︎",
+    \ "Ignored"   : "☒",
+    \ "Unknown"   : "?"
+    \ }
+
+let g:golang_goroot = "/home/marcus/go"
 
 " Settings for Conque Shell plugin
 " http://code.google.com/p/conque
@@ -522,6 +716,10 @@ let g:ConqueTerm_StartMessages = 0
 
 "" Close buffer when program exits
 let g:ConqueTerm_CloseOnEnd = 1
+
+"" Setting background transparent
+highlight Normal ctermbg=none
+highlight NonText ctermbg=none
 
 " Start NERDTree when in gui_gnome  MODE
 if has("gui_running")
